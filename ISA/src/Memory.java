@@ -4,7 +4,7 @@ import java.util.Queue;
 
 
 public class Memory {
-	 Queue<Instruction> IMemory = new LinkedList<Instruction>();
+	 ArrayList<Instruction> IMemory = new ArrayList<Instruction>();
 	 ArrayList<String> DMemory = new ArrayList<String>();
 	 private static Memory LogSingelton = null; 
 
@@ -19,8 +19,8 @@ public class Memory {
 	 public void addInstruction(Instruction i){
 		 this.IMemory.add(i);
 	 }
-	 public Instruction getInstruction(){
-		return this.IMemory.poll();
+	 public Instruction getInstruction(int i){
+		return this.IMemory.get(i);
 	 }
 //-----------------------------DATA MEMORY------------------------------------------------------
 	 public String load(String address , int offset){

@@ -26,7 +26,7 @@ public class Control {
  public String getInstructionName(String opCode){
 	 int x = Integer.parseInt(opCode,2);
 	 switch(x){
-	 case 0: return "ADD";
+	 case 0:{ ALUSrc=true; return "ADD";}
 	 case 1: return "SUB";
 	 case 2: return "AND";
 	 case 3: return "OR";

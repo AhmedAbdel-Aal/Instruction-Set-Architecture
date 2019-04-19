@@ -1,5 +1,15 @@
 
 public class Registers {
+	 private static Registers LogSingelton = null;
+	 public static Registers getInstance() 
+	 { 
+	     if (LogSingelton == null) 
+	    	 LogSingelton = new Registers(); 
+
+	     return LogSingelton; 
+	 }
+	 
+
   register zero  = new register(0);	
   register One  = new register(1);
   register v0  = new register(2);
@@ -18,11 +28,12 @@ public class Registers {
   register s1  = new register(15);
   register s2  = new register(16);
   
+  int r1,r2,r3;
   
   public void fetchInstruction(Instruction i ){
-	  int r1 = getRegisterValue(i.getR1Number());
-	  int r2 = getRegisterValue(i.getR2Number());
-	  int r3 = getRegisterValue(i.getR3Number());
+	   r1 = getRegisterValue(i.getR1Number());
+	   r2 = getRegisterValue(i.getR2Number());
+	   r3 = getRegisterValue(i.getR3Number());
 	  
 
   }
@@ -33,7 +44,37 @@ public class Registers {
   
   
   
-  public int getRegisterValue(int n){
+  public int getR1() {
+	return r1;
+}
+
+
+
+
+
+
+
+public int getR2() {
+	return r2;
+}
+
+
+
+
+
+
+
+public int getR3() {
+	return r3;
+}
+
+
+
+
+
+
+
+public int getRegisterValue(int n){
 	  switch(n){
 	  case 0: return zero.getValue();
 	  case 1: return One.getValue(); 

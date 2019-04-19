@@ -12,7 +12,7 @@ public class Instruction {
 		this.instruction = instruction;
 	}
 	public int getR3Number() {
-		return Integer.parseInt(instruction.substring(5, 10)); 
+		return Integer.parseInt(instruction.substring(5, 10),2); 
 	}
 	public String getInstruction() {
 		return instruction;
@@ -21,19 +21,19 @@ public class Instruction {
 		return instruction.substring(0, 5);
 	}
 	public int getR1Number() {
-		return Integer.parseInt(instruction.substring(15, 20)); 
+		return Integer.parseInt(instruction.substring(15, 20),2); 
 	}
 	public int getR2Number() {
-		return Integer.parseInt(instruction.substring(10, 15)); 
+		return Integer.parseInt(instruction.substring(10, 15),2); 
 	}
-	public String getImmediate() {
-		return instruction.substring(15);
+	public int getImmediate() {
+		return Integer.parseInt(instruction.substring(15),2);
 	}
-	public String getShift() {
-		return instruction.substring(20);
+	public int getShift() {
+		return Integer.parseInt(instruction.substring(20),2);
 	}
-	public String getAddress() {
-		return instruction.substring(5);
+	public int getAddress() {
+		return Integer.parseInt(instruction.substring(5),2);
 	}
 	
 	
