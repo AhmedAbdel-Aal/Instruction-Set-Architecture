@@ -29,11 +29,12 @@ public class Controller {
 		String pname=line;
 		initProgramFile(pname);
 		int k=0;
+		line =br.readLine();
 		while(line!=null){
-		line = br.readLine();	
 		Instruction i = new Instruction(line,pname,k);
 		memory.IMemory.add(i);
 		k++;
+		line = br.readLine();	
 		}	
 		
 	}
