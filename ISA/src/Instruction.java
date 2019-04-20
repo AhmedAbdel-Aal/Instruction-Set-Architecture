@@ -1,5 +1,9 @@
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Instruction {
+ String programeName;
+ int instNumber;
  String instruction;
  String opCode;
  int r1;
@@ -8,8 +12,11 @@ public class Instruction {
  String Immediate;
  String shift;
  String address;
-	public Instruction(String instruction) {
+	public Instruction(String instruction,String name,int x) throws IOException {
 		this.instruction = instruction;
+		this.instNumber=x;
+		this.programeName=name;
+		FileWriter writer = new FileWriter("InstructionFiles/"+programeName+"/"+instNumber,true);
 	}
 	public int getR3Number() {
 		return Integer.parseInt(instruction.substring(5, 10),2); 

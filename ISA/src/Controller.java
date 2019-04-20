@@ -1,4 +1,6 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.function.Consumer;
@@ -6,22 +8,42 @@ import java.util.function.Consumer;
 
 public class Controller {
     ALU alu  = ALU.getInstance();
-    Memory memory = Memory.getInstance();
+    static Memory memory = Memory.getInstance();
     Registers registers = Registers.getInstance();
     Control control = Control.getInstance();
 	static BufferedReader br= new BufferedReader( new InputStreamReader(System.in));
-
-	
- /// load program in instruction memory	
-	public void LoadProgram() throws Exception{
-		String line = br.readLine();
-		while(line!=null){
-		Instruction i = new Instruction(line);
-		memory.IMemory.add(i);
-		 line = br.readLine();		
-		}		
+ 
+	public static void main(String[] args) throws Exception {
+		Controller c = new Controller();
+		LoadProgram();
+		while(true) {
+			c.Fetch();
+			
+		}
 	}
 	
+ /// load program in instruction memory	
+	public static  void LoadProgram() throws Exception{
+		System.out.println("write your program name");
+		String line = br.readLine();
+		String pname=line;
+		initProgramFile(pname);
+		int k=0;
+		while(line!=null){
+		line = br.readLine();	
+		Instruction i = new Instruction(line,pname,k);
+		memory.IMemory.add(i);
+		k++;
+		}	
+		
+	}
+	
+	private static void initProgramFile(String line) throws IOException {
+	// TODO Auto-generated method stub
+	File f = new  File("InstructionFiles/"+line);
+	f.mkdir();	
+}
+
 	public void Operate(){
 		int x=1;
 		if(x==1){
