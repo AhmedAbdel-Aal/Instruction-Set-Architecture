@@ -1,7 +1,8 @@
 
 public class ALU {
 	
-	int acc ; 
+	int acc ;
+	boolean zero=false;
 	 private static ALU LogSingelton = null;
 	 public static ALU getInstance() 
 	 { 
@@ -73,7 +74,10 @@ public class ALU {
 			 z=x+1;
 		 }else if(op.equals("DEC")){
 			 z=x-1;
+		 }else if(op.equals("BEQ")){
+			 zero =(x==y);
 		 }
+		 
 		 
 		return z; 
 	 }
@@ -108,7 +112,12 @@ public class ALU {
             n >>= 1; 
         } 
         return rev; 
-    } 
+    }
+
+
+	public boolean isZero() {
+		return zero;
+	} 
 	
 
 }

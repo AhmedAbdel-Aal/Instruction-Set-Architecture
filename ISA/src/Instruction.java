@@ -4,6 +4,7 @@ import java.io.IOException;
 public class Instruction {
  String programeName;
  int instNumber;
+ String ipath;
  String instruction;
  String opCode;
  int r1;
@@ -16,7 +17,11 @@ public class Instruction {
 		this.instruction = instruction;
 		this.instNumber=x;
 		this.programeName=name;
-		FileWriter writer = new FileWriter("InstructionFiles/"+programeName+"/"+instNumber,true);
+		this.ipath="InstructionFiles\\"+programeName+"\\"+instNumber;
+		FileWriter writer = new FileWriter(ipath,true);
+	}
+	public String getIpath() {
+		return ipath;
 	}
 	public int getR3Number() {
 		return Integer.parseInt(instruction.substring(5, 10),2); 

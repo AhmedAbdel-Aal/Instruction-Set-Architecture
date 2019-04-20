@@ -9,6 +9,7 @@ public class Control {
  boolean MemtoReg=false;
  boolean ALUSrc=false;
  boolean regWrite=false;
+ String type ;
 
 
  public static Control getInstance() 
@@ -19,7 +20,7 @@ public class Control {
      return LogSingelton; 
  } 
 //-----------------------------------------------------------
- public void updateSignals(){
+ public void ResetControlSignals(){
 	  regDst=false;
 	  Branch=false;
 	  MemRead=false;
@@ -27,7 +28,7 @@ public class Control {
      MemtoReg=false;
 	  ALUSrc=false;
 	  regWrite=false;
-
+      type="";
  }
  
  public void setOpCode(String s){
@@ -43,42 +44,52 @@ public class Control {
 	      MemtoReg=false;
 		  ALUSrc=false;
 		  regWrite=true;
+		  type="R";
 	 }
 	 if(x==15||x==16){
 		 regDst=true;
 		 ALUSrc=true;
 		 regWrite=true;
+		  type="I";
 	 }
 	 if(x==17){
 		 Branch=true;
+		  type="I";
 	 }
 	 if(x==19||x==20){
 		 regDst=true;
 		 regWrite=true;
+		  type="I";
 	 }
 	 if(x==21){
 		  regDst=true;
 		  MemRead=true;
 	      MemtoReg=true;
 		  regWrite=true;
+		  type="I";
 	 }
 	 if(x==22){
-		  MemWrite=true;
+		  MemWrite=true; type="I";
 	 }
 	 if(x==23){
 		  regDst=true;
 		  regWrite=true;
+		  type="I";
 	 }
 	 if(x>=24&&x<=27){
 		  ALUSrc=true;
 	      regWrite=true;
+		  type="O";
 	 }
 	 if(x==28||x==29||x==30){
-		  regWrite=true;
+		  regWrite=true; type="O";
+	 }
+	 if(x==31){
+		  type="J";
 	 }
 	 
  }
- public String getInstructionName(String opCode){
+ public String getOperationName(String opCode){
 	 int x = Integer.parseInt(opCode,2);
 	 this.setOpCode(opCode);
 	 switch(x){
@@ -121,4 +132,30 @@ public class Control {
 	 default : return "NULL";
 	 }
  }
+public boolean isRegDst() {
+	return regDst;
+}
+public boolean isBranch() {
+	return Branch;
+}
+public boolean isMemRead() {
+	return MemRead;
+}
+public boolean isMemWrite() {
+	return MemWrite;
+}
+public boolean isMemtoReg() {
+	return MemtoReg;
+}
+public boolean isRegWrite() {
+	return regWrite;
+}
+public boolean isALUSrc() {
+	return ALUSrc;
+}
+public String getType() {
+	return type;
+}
+ 
+ 
 }
