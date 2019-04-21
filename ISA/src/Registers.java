@@ -9,23 +9,23 @@ public class Registers {
 		return LogSingelton;
 	}
 
-	register zero = new register(0);
-	register One = new register(1);
-	register v0 = new register(2);
-	register v1 = new register(3);
-	register a0 = new register(4);
-	register a1 = new register(5);
-	register ra = new register(6);
-	register sp = new register(7);
-	register fp = new register(8);
-	register gp = new register(9);
-	register t0 = new register(10);
-	register t1 = new register(11);
-	register t2 = new register(12);
-	register t3 = new register(13);
-	register s0 = new register(14);
-	register s1 = new register(15);
-	register s2 = new register(16);
+	register zero = new register(0,Integer.toBinaryString(0));
+	register One = new register(1,Integer.toBinaryString(1));
+	register v0 = new register(2,"00000");
+	register v1 = new register(3,"00000");
+	register a0 = new register(4,"00000");
+	register a1 = new register(5,"00000");
+	register ra = new register(6,"00000");
+	register sp = new register(7,"00000");
+	register fp = new register(8,"00000");
+	register gp = new register(9,"00000");
+	register t0 = new register(10,"00000");
+	register t1 = new register(11,"00000");
+	register t2 = new register(12,"00000");
+	register t3 = new register(13,"00000");
+	register s0 = new register(14,"00000");
+	register s1 = new register(15,"00000");
+	register s2 = new register(16,"00000");
 
 	int r1, r2, r3;
 
@@ -129,6 +129,17 @@ public class Registers {
 
 		}
 	}
+  public void printAllReg() {
+	  System.out.println();
+	  
+  }
 //	hello
+	public String toString() {
+		return "Registers [zero=" + zero + ", One=" + One + ", v0=" + v0 + ", v1="
+				+ v1 + ", a0=" + a0 + ", a1=" + a1 + ", ra=" + ra + ", sp=" + sp
+				+ ", fp=" + fp + ", gp=" + gp + ", t0=" + t0 + ", t1=" + t1
+				+ ", t2=" + t2 + ", t3=" + t3 + ", s0=" + s0 + ", s1=" + s1
+				+ ", s2=" + s2 + ", r1=" + r1 + ", r2=" + r2 + ", r3=" + r3 + "]";
+	}
 
 }

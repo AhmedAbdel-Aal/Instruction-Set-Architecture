@@ -2,7 +2,7 @@
 public class register {
   int number;
   String value;
- public register(int number) {
+ public register(int number,String value) {
 	this.number = number;
 	this.value = "00000";
  }
