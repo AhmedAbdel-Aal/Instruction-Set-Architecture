@@ -46,7 +46,7 @@ public class Controller {
 	
 	private static void initProgramFile(String line) throws IOException {
 	// TODO Auto-generated method stub
-	File f = new  File("InstructionFiles\\"+line);
+	File f = new  File("InstructionFiles/"+line);
 	f.mkdir();	
 }
 
@@ -171,10 +171,20 @@ public void Fetch(){
 		 
 		 
 	if(iname.equals("SW")){
-		
+		if(regWrite) {
+//			address of memory stored in r3
+			int memAddress=registers.getRegisterValue(r3);
+//			offset is the immediate value
+//			data to be stored in memory is saved in r2
+			String data=Integer.toBinaryString(registers.getRegisterValue(r2));
+			memory.store(data, immediate, Integer.toBinaryString(memAddress));	
+		}
 	}
 	else if(iname.equals("LD")){
-		
+		String address=Integer.toBinaryString(registers.getRegisterValue(r2));
+		String out=memory.load(address, immediate);
+//		store value in register
+		this.registers.SetRegisterValue(out, r3);
 	}
 
 	 
@@ -198,4 +208,5 @@ public void Fetch(){
  public int Mux2x1(int x,int y,boolean s){
 	 return(s)?x:y;
  }
+
 }
