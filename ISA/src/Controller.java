@@ -150,6 +150,7 @@ public void Fetch(){
 		 EXECUTE.add("ALUout",z);
 		 
  }
+// nada
  public void MemoryRW(){
 	 //extract operation name
 	     String iname = (String) MEMORY.get("iname"); 
