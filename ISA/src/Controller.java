@@ -18,13 +18,22 @@ public class Controller {
     Control control = Control.getInstance();
 	static BufferedReader br= new BufferedReader( new InputStreamReader(System.in));
     boolean flag=true;
+    int state [] = {0,-1,-1,-1,-1};
+	int pc=0;
+	String i = null;
+    String Iname="";
+    int r1,r2,r3,Immediate,shift,address;
+    int count=0;
+//=========================================================
+			 PipelineFile FETCH =  new PipelineFile(); 
+			 PipelineFile DECODE =  new PipelineFile();
+			 PipelineFile EXECUTE =  new PipelineFile();
+			 PipelineFile MEMORY =  new PipelineFile();
+			 PipelineFile WRITEBACK =  new PipelineFile();
+			 PipelineFile temp =  new PipelineFile();
+//=========================================================
+
 	public static void main(String[] args) throws Exception {
-		/*code
-		 * addition
-		 * 0011110010000000000000001  addi a0,0,1
-           0011110010100000000000010  addi a1,0,2
-           0000000001000100001010000  add v0,a0,a1
-		 * */
 		Controller c = new Controller();
 		ArrayList<Instruction> insts = new ArrayList<Instruction>();
 		System.out.println("write your program name");
@@ -48,31 +57,6 @@ public class Controller {
 		int s=0;
 		
 		while(c.flag) {
-//		if(x==1){
-//			c.Fetch();
-//		}
-//		if(x==2){
-//			c.Decode();
-//			c.Fetch();
-//		}
-//		if(x==3){
-//			c.Execute();
-//			c.Decode();
-//			c.Fetch();
-//		}
-//		if(x==4){
-//			c.MemoryRW();
-//			c.Execute();
-//			c.Decode();
-//			c.Fetch();
-//		}
-//		else{
-//			c.WriteBack();
-//			c.MemoryRW();
-//			c.Execute();
-//			c.Decode();
-//			c.Fetch();
-//		}
 			c.Fetch();
 			c.Decode();
 			c.Execute();
@@ -97,66 +81,15 @@ public class Controller {
 	}
 	
  
-/// load program in instruction memory	
-	public static  ArrayList<Instruction> LoadProgram() throws Exception{
-		ArrayList<Instruction> insts = new ArrayList<Instruction>();
-		System.out.println("write your program name");
-		String line = br.readLine();
-		String pname=line;
-		initProgramFile(pname);
-		int k=0;
-		line =br.readLine();
-		while(line!="end"){
-		Instruction i = new Instruction(line,pname,k);
-		memory.IMemory.add(i);
-		insts.add(i);
-		k++;
-		System.out.println("enter next instruction");
-		line = br.readLine();	
-		}	
-	 return insts;	
-	}
-	
+
 	private static void initProgramFile(String line) throws IOException {
 	// TODO Auto-generated method stub
 	File f = new  File("InstructionFiles\\"+line);
 	f.mkdir();	
 }
 
-	public void Operate(){
-		int x=1;
-		if(x==1){
-			
-		}
-		if(x==2){
-			
-		}
-		if(x==3){
-			
-		}
-		if(x==4){
-			
-		}
-		if(x==5){
-			
-		}
-	}
- 
-	
-//-------------------------------------------------------------------------------------------------  
-    int state [] = {0,-1,-1,-1,-1};
-	int pc=0;
-	String i = null;
- String Iname="";
- int r1,r2,r3,Immediate,shift,address;
- 
- PipelineFile FETCH =  new PipelineFile();
- PipelineFile DECODE =  new PipelineFile();
- PipelineFile EXECUTE =  new PipelineFile();
- PipelineFile MEMORY =  new PipelineFile();
- PipelineFile WRITEBACK =  new PipelineFile();
- PipelineFile temp =  new PipelineFile();
- int count=0;
+//-------------------------------------------------------------------------------------------------------  
+
  
 public void Fetch(){
 	 if((pc<this.memory.IMemory.size())){
@@ -215,7 +148,8 @@ public void Fetch(){
 	   
    }
  }
- 
+//-------------------------------------------------------------------------------------------------------  
+
  public void Execute(){
 	   if(!EXECUTE.info.isEmpty()&&!EXECUTE.get("iname").equals("j")){
 	 //extract operation name
@@ -265,6 +199,8 @@ public void Fetch(){
 		 
   }
  }
+//-------------------------------------------------------------------------------------------------------  
+ 
  public void MemoryRW(){
 	   if(!MEMORY.info.isEmpty()&&!MEMORY.get("iname").equals("BEQ")&&!MEMORY.get("iname").equals("j")){
 	 //extract operation name
@@ -317,6 +253,8 @@ public void Fetch(){
 
   }
  }
+//-------------------------------------------------------------------------------------------------------  
+
  public void WriteBack() throws Exception{
 	   if(!WRITEBACK.info.isEmpty()&&!WRITEBACK.get("iname").equals("BEQ")&&!WRITEBACK.get("iname").equals("j")){
 
@@ -371,6 +309,8 @@ public void Fetch(){
 	 
   }
  }
+//-------------------------------------------------------------------------------------------------------  
+
  private void RefreshPipelines() {
 		// TODO Auto-generated method stub
       WRITEBACK.clear();
@@ -390,6 +330,7 @@ public void Fetch(){
 	  System.out.println("write back = "+WRITEBACK.toString());
 
 	}
+//-------------------------------------------------------------------------------------------------------  
 
  public int Mux2x1(int x,int y,boolean s){
 	 return(s)?y:x;
