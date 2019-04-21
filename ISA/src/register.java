@@ -16,6 +16,10 @@ public int getValue() {
 public void setValue(String value) {
 	this.value = value;
 }
+@Override
+public String toString() {
+	return "register [number=" + number + ", value=" + value + "]";
+}
  
 
   

@@ -11,7 +11,11 @@ public PipelineFile() {
 }
 
 public void add(String s, Object o){
+ try{	
 	info.put(s, o);
+ }catch(Exception e){
+	 e.printStackTrace();
+ }
 }
 public Object get(String s){
 	return info.get(s);

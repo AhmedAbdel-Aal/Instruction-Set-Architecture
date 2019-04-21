@@ -1,8 +1,12 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 
@@ -14,34 +18,67 @@ public class Controller {
 	static BufferedReader br= new BufferedReader( new InputStreamReader(System.in));
  
 	public static void main(String[] args) throws Exception {
+		/*code
+		 * addition
+		 * 0011110010000000000000001  addi a0,0,1
+           0011110010100000000000010  addi a1,0,2
+           0000000001000100001010000  add v0,a0,a1
+		 * */
 		Controller c = new Controller();
-		LoadProgram();
-		while(true) {
-			c.Fetch();
-			c.Decode();
-			c.Execute();
-			c.MemoryRW();
-			c.WriteBack();
-			c.RefreshPipelines();
-		}
-	}
-	
- 
-/// load program in instruction memory	
-	public static  void LoadProgram() throws Exception{
+		ArrayList<Instruction> insts = new ArrayList<Instruction>();
 		System.out.println("write your program name");
 		String line = br.readLine();
 		String pname=line;
 		initProgramFile(pname);
 		int k=0;
 		line =br.readLine();
-		while(line!=null){
+		while(!line.equals("end")){
 		Instruction i = new Instruction(line,pname,k);
 		memory.IMemory.add(i);
+		insts.add(i);
 		k++;
+		System.out.println("inst "+k+" "+i.instruction);
+		System.out.println("enter next instruction");
+
 		line = br.readLine();	
 		}	
-		
+		int v=insts.size();
+		while(v-->0) {
+			c.Fetch();
+			c.Decode();
+			c.Execute();
+			c.MemoryRW();
+			c.WriteBack();
+			c.RefreshPipelines();
+			System.out.println("for k == "+k);
+			System.out.println(c.DECODE.info.toString());
+			System.out.println(c.EXECUTE.info.toString());
+			System.out.println(c.MEMORY.info.toString());
+			System.out.println(c.WRITEBACK.info.toString());
+
+		}
+		c.registers.toString();
+	}
+	
+ 
+/// load program in instruction memory	
+	public static  ArrayList<Instruction> LoadProgram() throws Exception{
+		ArrayList<Instruction> insts = new ArrayList<Instruction>();
+		System.out.println("write your program name");
+		String line = br.readLine();
+		String pname=line;
+		initProgramFile(pname);
+		int k=0;
+		line =br.readLine();
+		while(line!="end"){
+		Instruction i = new Instruction(line,pname,k);
+		memory.IMemory.add(i);
+		insts.add(i);
+		k++;
+		System.out.println("enter next instruction");
+		line = br.readLine();	
+		}	
+	 return insts;	
 	}
 	
 	private static void initProgramFile(String line) throws IOException {
@@ -73,7 +110,7 @@ public class Controller {
 //-------------------------------------------------------------------------------------------------  
     int state [] = {0,-1,-1,-1,-1};
 	int pc=0;
-	Instruction i = null;
+	String i = null;
  String Iname="";
  int r1,r2,r3,Immediate,shift,address;
  
@@ -86,12 +123,12 @@ public class Controller {
  
 public void Fetch(){
 	 
-	 this.i = this.memory.getInstruction(pc);
+	 this.i = this.memory.getInstruction(pc).instruction;
+	 System.out.println("from fetch we get i = "+this.memory.getInstruction(pc).instruction);
 	 // set values needed for decode method
 	 FETCH.add("instruction", i);
-	 FETCH.add("path",i.getIpath());
+	 FETCH.add("path",this.memory.getInstruction(pc).getIpath());
 	 pc=pc+1;
-	 state[0]++;state[1]++;
  }
  public void Decode(){
 	   
@@ -169,19 +206,55 @@ public void Fetch(){
 		 boolean ALUSrc=(boolean) MEMORY.get("ALUSrc");
 		 boolean regWrite=(boolean) MEMORY.get("regWrite");
 		 
-		 
+	 int x=0;	 
 	if(iname.equals("SW")){
-		
 	}
 	else if(iname.equals("LD")){
-		
+		x=1;
 	}
+	int t = Mux2x1((int)MEMORY.get("ALUout"),x ,MemtoReg);
+	MEMORY.add("ALUout",t);
 
 	 
 	 
 
  }
- public void WriteBack(){
+ public void WriteBack() throws Exception{
+ //extract operation name
+     String iname = (String) WRITEBACK.get("iname"); 
+ //extract type , registers , immediate and shift
+	 String type = (String) WRITEBACK.get("type");
+	 int r1 = (int) WRITEBACK.get("r1");
+	 int r2 = (int) WRITEBACK.get("r2");
+	 int r3 = (int) WRITEBACK.get("r3");
+	 int immediate = (int) WRITEBACK.get("immediate");
+	 int shift = (int) WRITEBACK.get("shift");
+ //extract control signals
+	 boolean regDst=(boolean) WRITEBACK.get("RegDst");
+	 boolean Branch=(boolean) WRITEBACK.get("Branch");
+	 boolean MemRead=(boolean) WRITEBACK.get("MemRead");
+	 boolean MemWrite=(boolean) WRITEBACK.get("MemWrite");
+	 boolean MemtoReg=(boolean) WRITEBACK.get("MemtoReg");
+	 boolean ALUSrc=(boolean) WRITEBACK.get("ALUSrc");
+	 boolean regWrite=(boolean) WRITEBACK.get("regWrite");
+	 
+	 int x = (int) WRITEBACK.get("ALUout");
+	 int y = Mux2x1(1, 2, regDst);
+	 if(y==1)
+     	 WRITEBACK.add("r2", x);
+	 else
+		 WRITEBACK.add("r3", x);
+ 
+	//write the instruction file
+	 String filepath =((Instruction) WRITEBACK.get("instruction")).getIpath();
+		// to write to the file => open write streams to the file
+		FileOutputStream FileOut = new FileOutputStream(filepath);
+		ObjectOutputStream Out = new ObjectOutputStream(FileOut);
+		//write to the object
+		Out.writeObject(WRITEBACK.info);
+
+	 
+	 
 	 
  }
  private void RefreshPipelines() {

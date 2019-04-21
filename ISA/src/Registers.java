@@ -44,7 +44,22 @@ public class Registers {
   
   
   
-  public int getR1() {
+  @Override
+public String toString() {
+	return "Registers [zero=" + zero + ", One=" + One + ", v0=" + v0 + ", v1="
+			+ v1 + ", a0=" + a0 + ", a1=" + a1 + ", ra=" + ra + ", sp=" + sp
+			+ ", fp=" + fp + ", gp=" + gp + ", t0=" + t0 + ", t1=" + t1
+			+ ", t2=" + t2 + ", t3=" + t3 + ", s0=" + s0 + ", s1=" + s1
+			+ ", s2=" + s2 + ", r1=" + r1 + ", r2=" + r2 + ", r3=" + r3 + "]";
+}
+
+
+
+
+
+
+
+public int getR1() {
 	return r1;
 }
 

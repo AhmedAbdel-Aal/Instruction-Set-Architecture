@@ -25,11 +25,11 @@ public class Memory {
 //-----------------------------DATA MEMORY------------------------------------------------------
 	 public String load(String address , int offset){
 		 int x = Integer.parseInt(address,2);
-		 return DMemory.get((x*4)+offset);
+		 return DMemory.get(((x*4)+offset)%128);
 	 }
 	 public void store(String data , int offset , String address){
 		 int x = Integer.parseInt(address,2);
-		 int z = (x*4)+offset;
+		 int z = ((x*4)+offset)%128;
 		 DMemory.set(z,data);
 	 }
 	 
