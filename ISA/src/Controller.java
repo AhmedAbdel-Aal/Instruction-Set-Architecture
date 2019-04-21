@@ -41,14 +41,40 @@ public class Controller {
 		System.out.println("enter next instruction");
 
 		line = br.readLine();	
-		}	
-		int v=insts.size();
-		while(v-->0) {
+		}
+		int x=0;
+		int v=0;
+		while(v<8) {
+		 if(x==0)	
 			c.Fetch();
+		 if(x==1){
+			c.Fetch(); 
 			c.Decode();
+		 }
+		 if(x==3){
+			 c.Fetch(); 
+				c.Decode(); 
+			c.Execute();
+		 }
+		 if(x==4){
+				c.Decode(); 
+			c.Execute();
+			c.MemoryRW();
+		 }
+		 if(x>=5){
 			c.Execute();
 			c.MemoryRW();
 			c.WriteBack();
+		 }
+		 if(x==6){
+			 c.MemoryRW();
+				c.WriteBack();
+		 }
+		 if(x==7){
+			 c.WriteBack();
+		 }
+		 x++;
+		 v++;
 			c.RefreshPipelines();
 			System.out.println("for k == "+k);
 			System.out.println(c.DECODE.info.toString());
@@ -123,7 +149,7 @@ public class Controller {
  
 public void Fetch(){
 	 
-	 this.i = this.memory.getInstruction(pc).instruction;
+	 Instruction i = this.memory.getInstruction(pc);
 	 System.out.println("from fetch we get i = "+this.memory.getInstruction(pc).instruction);
 	 // set values needed for decode method
 	 FETCH.add("instruction", i);
@@ -266,6 +292,7 @@ public void Fetch(){
 	  EXECUTE.clear();
 	  EXECUTE.clone(DECODE);
 	  DECODE.clear();
+	  DECODE.clone(FETCH);
 	}
 
  public int Mux2x1(int x,int y,boolean s){

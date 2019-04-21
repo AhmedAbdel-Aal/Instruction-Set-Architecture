@@ -6,7 +6,7 @@ public class PipelineFile implements Serializable{
  
  
 public PipelineFile() {
-	 Hashtable<String,Object> info = new Hashtable<String,Object>();
+	 this.info = new Hashtable<String,Object>();
 
 }
 
@@ -27,6 +27,7 @@ public void clear(){
 
 public  void clone(PipelineFile p ){
 	this.info = (Hashtable<String, Object>) p.info.clone();
+	System.out.println(this.info.toString());
 }
 
   
