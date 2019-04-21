@@ -28,7 +28,7 @@ public class ALU {
 		 }
 		 else if(op.equals("AND")){
 			 z=x&y;
-		 }else if(op.equals("0R")){
+		 }else if(op.equals("OR")){
 			 z=x|y;
 		 }else if(op.equals("XOR")){
 			 z=x^y;
@@ -40,8 +40,8 @@ public class ALU {
 			 z=x*y;
 		 }else if(op.equals("MULA")){
 			 z=acc+(x*y);
-		 }else if(op.equals("ADDC")){
-			 z=x-y; //////////////////////////////////////comment
+		 }else if(op.equals("nCk")){
+			 z=binomialCoeff(x, y); //////////////////////////////////////comment
 		 }else if(op.equals("SUBRV")){
 			 z=y-x;
 		 }else if(op.equals("GCD")){
@@ -61,7 +61,12 @@ public class ALU {
 		 }
 		 else if(op.equals("NONE")){
 			 z=numberOfSetBits(x);
-		 }else if(op.equals("SLLL")){
+		 }else if(op.equals("MOV")){
+			 z=x;
+		 }else if(op.equals("MOVI")){
+			 z=y;
+		 }
+		 else if(op.equals("SLL")){
 			 z=x<<y;
 		 }else if(op.equals("SRL")){
 			 z=x>>>y;
@@ -69,7 +74,7 @@ public class ALU {
 			 z=x>>y;
 		 }
 		 else if(op.equals("NOT")){
-			 z=reverseBits(x);
+			 z=~x;
 		 }else if(op.equals("INC")){
 			 z=x+1;
 		 }else if(op.equals("DEC")){
@@ -118,6 +123,16 @@ public class ALU {
 	public boolean isZero() {
 		return zero;
 	} 
-	
+	public int binomialCoeff(int n, int k) 
+    {
+     
+        // Base Cases
+        if (k == 0 || k == n)
+            return 1;
+         
+        // Recur
+        return binomialCoeff(n - 1, k - 1) + 
+                    binomialCoeff(n - 1, k);
+    }
 
 }

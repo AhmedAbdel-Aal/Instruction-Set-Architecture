@@ -9,24 +9,32 @@ public class Registers {
 	     return LogSingelton; 
 	 }
 	 
-
-  register zero  = new register(0);	
-  register One  = new register(1);
-  register v0  = new register(2);
-  register v1  = new register(3);
-  register a0  = new register(4);
-  register a1  = new register(5);
-  register ra  = new register(6);
-  register sp  = new register(7);
-  register fp  = new register(8);
-  register gp  = new register(9);
-  register t0  = new register(10);
-  register t1  = new register(11);
-  register t2  = new register(12);
-  register t3  = new register(13);
-  register s0  = new register(14);
-  register s1  = new register(15);
-  register s2  = new register(16);
+	  register zero  = new register(0);	
+	  register One  = new register(1); 
+	  register v0  = new register(2);
+	  register v1  = new register(3);
+	  register a0  = new register(4);
+	  register a1  = new register(5);
+	  register ra  = new register(6);
+	  register sp  = new register(7);
+	  register fp  = new register(8);
+	  register gp  = new register(9);
+	  register t0  = new register(10);
+	  register t1  = new register(11);
+	  register t2  = new register(12);
+	  register t3  = new register(13);
+	  register s0  = new register(14);
+	  register s1  = new register(15);
+	  register s2  = new register(16);
+  
+  
+public Registers(){
+	
+	  One.setValue(1);
+	 // a1.setValue(4);
+	  t0.setValue(3);
+	  t1.setValue(4);
+}
   
   int r1,r2,r3;
   
@@ -47,7 +55,7 @@ public class Registers {
   @Override
 public String toString() {
 	return "Registers [zero=" + zero + ", One=" + One + ", v0=" + v0 + ", v1="
-			+ v1 + ", a0=" + a0 + ", a1=" + a1 + ", ra=" + ra + ", sp=" + sp
+			+ v1 + ", a0=" + a0.toString() + ", a1=" + a1 + ", ra=" + ra + ", sp=" + sp
 			+ ", fp=" + fp + ", gp=" + gp + ", t0=" + t0 + ", t1=" + t1
 			+ ", t2=" + t2 + ", t3=" + t3 + ", s0=" + s0 + ", s1=" + s1
 			+ ", s2=" + s2 + ", r1=" + r1 + ", r2=" + r2 + ", r3=" + r3 + "]";
@@ -88,7 +96,28 @@ public int getR3() {
 
 
 
-
+public void setRegisterValue(int n , int value){
+	 switch(n){
+	  case 0: zero.setValue(value);break;
+	  case 1:  One.setValue(value);break; 
+	  case 2:  v0.setValue(value);break; 
+	  case 3:  v1.setValue(value);break; 
+	  case 4:  a0.setValue(value);break; 
+	  case 5:  a1.setValue(value);break; 
+	  case 6:  ra.setValue(value);break; 
+	  case 7:  sp.setValue(value);break; 
+	  case 8:  fp.setValue(value);break; 
+	  case 9:  gp.setValue(value);break; 
+	  case 10:  t0.setValue(value);break; 
+	  case 11:  t1.setValue(value);break; 
+	  case 12:  t2.setValue(value);break; 
+	  case 13:  t3.setValue(value);break; 
+	  case 14:  s0.setValue(value);break; 
+	  case 15:  s1.setValue(value);break; 
+	  case 16:  s2.setValue(value);break; 
+	 
+	  }
+}
 public int getRegisterValue(int n){
 	  switch(n){
 	  case 0: return zero.getValue();
@@ -108,7 +137,7 @@ public int getRegisterValue(int n){
 	  case 14: return s0.getValue(); 
 	  case 15: return s1.getValue(); 
 	  case 16: return s2.getValue(); 
-	  default : return 0;
+	  default : return 10;
 	  }
   }
   

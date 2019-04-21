@@ -27,7 +27,11 @@ public void clear(){
 
 public  void clone(PipelineFile p ){
 	this.info = (Hashtable<String, Object>) p.info.clone();
-	System.out.println(this.info.toString());
+}
+
+@Override
+public String toString() {
+	return "PipelineFile [info=" + info.toString() + "]";
 }
 
   
