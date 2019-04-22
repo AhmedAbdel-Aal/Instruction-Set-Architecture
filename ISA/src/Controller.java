@@ -1,3 +1,9 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,20 +16,32 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
-public class Controller {
+
+public class Controller extends JFrame{
     ALU alu  = ALU.getInstance();
     static Memory memory = Memory.getInstance();
     Registers registers = Registers.getInstance();
     Control control = Control.getInstance();
+    Translator translator = new Translator();
 	static BufferedReader br= new BufferedReader( new InputStreamReader(System.in));
     boolean flag=true;
     int state [] = {0,-1,-1,-1,-1};
 	int pc=0;
 	String i = null;
     String Iname="";
+	String ProgramLines;
     int r1,r2,r3,Immediate,shift,address;
     int count=0;
+    JTextArea program; 
+    JPanel gridPanel;
+    
 //=========================================================
 			 PipelineFile FETCH =  new PipelineFile(); 
 			 PipelineFile DECODE =  new PipelineFile();
@@ -32,55 +50,146 @@ public class Controller {
 			 PipelineFile WRITEBACK =  new PipelineFile();
 			 PipelineFile temp =  new PipelineFile();
 //=========================================================
-
-	public static void main(String[] args) throws Exception {
-		Controller c = new Controller();
-		ArrayList<Instruction> insts = new ArrayList<Instruction>();
-		System.out.println("write your program name");
-		String line = br.readLine();
-		String pname=line;
-		initProgramFile(pname);
-		int k=0;
-		line =br.readLine();
-		while(!line.equals("end")){
-		Instruction i = new Instruction(line,pname,k);
-		memory.IMemory.add(i);
-		insts.add(i);
-		k++;
-		System.out.println("inst "+k+" "+i.instruction);
-		System.out.println("enter next instruction");
-
-		line = br.readLine();	
+	  public Controller(){
+		  draw();
+	  }
+		public void draw(){
+		this.setTitle("Java Assembler");
+		this.getContentPane().setForeground(SystemColor.windowBorder);
+		this.getContentPane().setBackground(SystemColor.activeCaption);
+		this.setBounds(100, 100, 1000, 490);
+		this.getContentPane().setLayout(null);
+		
+		program = new JTextArea();
+		program.setFont(new Font("Arial", Font.PLAIN, 24));
+		JScrollPane scroll = new JScrollPane(program);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setBounds(12, 13, 450, 362);
+		this.getContentPane().add(scroll);
+		
+		gridPanel =  new  JPanel();
+		gridPanel.setBounds(12+450+50, 13, 450, 362);
+		gridPanel.setLayout(new GridLayout(8, 2));
+		for (int i = 0; i < 8 * 2; i++) {
+			
+		    gridPanel.add(new JLabel(registers.registersArray[i]+" = "+registers.getRegisterValue(i) ));
 		}
+		this.getContentPane().add(gridPanel);
+
+		JButton load = new JButton("Load Program");
+		load.setBounds(22, 388, 200, 50);
+		load.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				try {
+					LoadProgram();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		this.getContentPane().add(load);
+		
+		JButton execute = new JButton("Execute");
+		execute.setBounds(22+200+25, 388, 200, 50);
+		execute.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				try {
+					ExecuteProgram();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		this.getContentPane().add(execute);
+		
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		this.setVisible(true);
+		this.setVisible(true);
+		
+
+		
+	}
+			 
+			 
+			 
+			 
+			 
+//-------------------------------------------------------------------------------------------------------  
+	 
+			 
+	public static void main(String[] args) {
+		Controller c = new Controller();
+	}		 
+			 
+			 
+			 
+			 
+//-------------------------------------------------------------------------------------------------------  
+	 public void LoadProgram () throws IOException{
+		 String s[]= program.getText().split("\n");
+		 initProgramFile(s[0]);
+		 System.out.println(Arrays.toString(s));
+		 System.out.println(s[0]+" "+s[1]);
+		 for(int i=1;i<s.length;i++){
+		   memory.IMemory.add(new Instruction(translator.translate(s[i]),s[0],i));	 
+			 System.out.println("==="+translator.translate(s[i])+"===");
+		 }
+	 }
+	
+//-------------------------------------------------------------------------------------------------------  
+	
+	 public void  ExecuteProgram () throws Exception {
 		int x=1;
 		int v=1;
 		int s=0;
 		
-		while(c.flag) {
-			c.Fetch();
-			c.Decode();
-			c.Execute();
-			c.MemoryRW();
-			c.WriteBack();
-
-		System.out.println("==============================");
-		System.out.println("at loop "+v+" = "+c.registers.toString());
-		System.out.println(c.FETCH.info.toString());
-		System.out.println(c.DECODE.info.toString());
-		System.out.println(c.EXECUTE.info.toString());
-		System.out.println(c.MEMORY.info.toString());
-		System.out.println(c.WRITEBACK.info.toString());
-		System.out.println("==============================");		
-	v++;		
-	x++;	
-	s++;
-	c.RefreshPipelines();
+		while(flag) {
+			Fetch();
+			Decode();
+			Execute();
+			MemoryRW();
+			WriteBack();
+	
+			System.out.println("==============================");
+			System.out.println("at loop "+v+" = "+registers.toString());
+			System.out.println(FETCH.info.toString());
+			System.out.println(DECODE.info.toString());
+			System.out.println(EXECUTE.info.toString());
+			System.out.println(MEMORY.info.toString());
+			System.out.println(WRITEBACK.info.toString());
+			System.out.println("==============================");	
+			
+			RefreshPipelines();
 		}
-		System.out.println(c.registers.toString());
+		System.out.println(registers.toString());
 		System.out.println(Arrays.toString(memory.DMemory));
+		updateRpanel();
 	}
 	
  
+//-------------------------------------------------------------------------------------------------------  
+
+	private void updateRpanel() {
+		// TODO Auto-generated method stub
+		ProgramLines = this.program.getText();
+		draw();
+		this.program.setText(ProgramLines);
+		
+	}
+
+
+
+	//-------------------------------------------------------------------------------------------------------  
 
 	private static void initProgramFile(String line) throws IOException {
 	// TODO Auto-generated method stub
@@ -199,6 +308,9 @@ public void Fetch(){
 		 
   }
  }
+ 
+
+
 //-------------------------------------------------------------------------------------------------------  
  
  public void MemoryRW(){

@@ -31,6 +31,7 @@ public class Instruction implements Serializable{
 		return instruction;
 	}
 	public String getOpCode() {
+		System.out.println(instruction);
 		return instruction.substring(0, 5);
 	}
 	public int getR1Number() {

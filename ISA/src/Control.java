@@ -98,6 +98,7 @@ public class Control {
 	 
  }
  public String getOperationName(String opCode){
+	 System.out.println("from control = opcode = "+opCode);
 	 int x = Integer.parseInt(opCode,2);
 	 this.setOpCode(opCode);
 	 switch(x){

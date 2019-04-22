@@ -8,7 +8,9 @@ public class Registers {
 
 	     return LogSingelton; 
 	 }
-	 
+	  String registersArray []= {"Zero","One","v0","v1","a0","a1",
+			  "ra","sp","fp","gp","t0","t1","t2","t3","s0",
+			  "s1","s2"};
 	  register zero  = new register(0);	
 	  register One  = new register(1); 
 	  register v0  = new register(2);
@@ -31,7 +33,8 @@ public class Registers {
 public Registers(){
 	
 	  One.setValue(1);
-	 // a1.setValue(4);
+	  fp.setValue(1);
+	  a0.setValue(5);
 	  t0.setValue(3);
 	  t1.setValue(4);
 }
