@@ -8,6 +8,7 @@ public class PipelineFile implements Serializable{
 public PipelineFile() {
 	 this.info = new Hashtable<String,Object>();
 
+
 }
 
 public void add(String s, Object o){
@@ -16,6 +17,7 @@ public void add(String s, Object o){
  }catch(Exception e){
 	 e.printStackTrace();
  }
+
 }
 public Object get(String s){
 	return info.get(s);

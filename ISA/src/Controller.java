@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.function.Consumer;
 
 import javax.swing.JButton;
@@ -170,7 +172,6 @@ public class Controller extends JFrame{
 			System.out.println("==============================");	
 			
 			RefreshPipelines();
-		}
 		System.out.println(registers.toString());
 		System.out.println(Arrays.toString(memory.DMemory));
 		updateRpanel();
@@ -184,6 +185,7 @@ public class Controller extends JFrame{
 		ProgramLines = this.program.getText();
 		draw();
 		this.program.setText(ProgramLines);
+
 		
 	}
 
@@ -193,7 +195,7 @@ public class Controller extends JFrame{
 
 	private static void initProgramFile(String line) throws IOException {
 	// TODO Auto-generated method stub
-	File f = new  File("InstructionFiles\\"+line);
+	File f = new  File("InstructionFiles/"+line);
 	f.mkdir();	
 }
 
@@ -204,6 +206,7 @@ public void Fetch(){
 	 if((pc<this.memory.IMemory.size())){
 	 Instruction i = this.memory.getInstruction(pc);
 	 System.out.println("from fetch we get i = "+this.memory.getInstruction(pc).instruction);
+
 	 // set values needed for decode method
 	 FETCH.add("instruction", i);
 	 FETCH.add("path",this.memory.getInstruction(pc).getIpath());
@@ -220,10 +223,12 @@ public void Fetch(){
  public void Decode(){
 	   if(!DECODE.info.isEmpty()){
 	   Instruction i = (Instruction) DECODE.get("instruction");
+//	   System.out.println(i.toString()+"***");
        String Iname=this.control.getOperationName(i.getOpCode()); 
 	   r1 = this.registers.getRegisterValue(i.getR1Number());
 	   r2 = this.registers.getRegisterValue(i.getR2Number());
 	   r3 = this.registers.getRegisterValue(i.getR3Number());
+//	   System.out.println(r1+" "+r2+" "+r3+" ");
 	   Immediate=i.getImmediate();
 	   shift =i.getShift();
 	   address = i.getAddress();
@@ -256,11 +261,13 @@ public void Fetch(){
 	   }
 	   
    }
+
  }
 //-------------------------------------------------------------------------------------------------------  
 
  public void Execute(){
 	   if(!EXECUTE.info.isEmpty()&&!EXECUTE.get("iname").equals("j")){
+
 	 //extract operation name
 	     String iname = (String) EXECUTE.get("iname"); 
 	 //extract type , registers , immediate and shift
@@ -278,7 +285,7 @@ public void Fetch(){
 		 boolean MemWrite=(boolean) EXECUTE.get("MemWrite");
 		 boolean MemtoReg=(boolean) EXECUTE.get("MemtoReg");
 		 boolean ALUSrc=(boolean) EXECUTE.get("ALUSrc");
-		 boolean regWrite=(boolean) EXECUTE.get("regWrite");
+		 boolean regWrite=(boolean) EXECUTE.get("RegWrite");
 	
 	// execution of operation inside ALU 
 	int z=0;	 
@@ -305,6 +312,10 @@ public void Fetch(){
    // add the stage modifications
 		 EXECUTE.add("ALUZero", alu.isZero());
 		 EXECUTE.add("ALUout",z);
+	 }
+	 else {
+		 System.out.println("not there yet in the execute phase");
+	 }
 		 
   }
  }
@@ -315,6 +326,7 @@ public void Fetch(){
  
  public void MemoryRW(){
 	   if(!MEMORY.info.isEmpty()&&!MEMORY.get("iname").equals("BEQ")&&!MEMORY.get("iname").equals("j")){
+
 	 //extract operation name
 	     String iname = (String) MEMORY.get("iname"); 
 	 //extract type , registers , immediate and shift
@@ -331,7 +343,7 @@ public void Fetch(){
 		 boolean MemWrite=(boolean) MEMORY.get("MemWrite");
 		 boolean MemtoReg=(boolean) MEMORY.get("MemtoReg");
 		 boolean ALUSrc=(boolean) MEMORY.get("ALUSrc");
-		 boolean regWrite=(boolean) MEMORY.get("regWrite");
+		 boolean regWrite=(boolean) MEMORY.get("RegWrite");
 		 
 	 int x=0;	 
 	if(iname.equals("SW")&&MemWrite){
@@ -359,7 +371,10 @@ public void Fetch(){
      //   this.registers.setRegisterValue(Rn, r3);
 
 	}
-
+	 }
+	 else {
+		 System.out.println("not there yet in memory write phase");
+	 }
 	 
 	 
 
@@ -377,6 +392,7 @@ public void Fetch(){
 	 int r1 = (int) WRITEBACK.get("r1V");
 	 int r2 = (int) WRITEBACK.get("r2V");
 	 int r3 = (int) WRITEBACK.get("r3V");
+
 	 int immediate = (int) WRITEBACK.get("immediate");
 	 int shift = (int) WRITEBACK.get("shift");
  //extract control signals
@@ -387,6 +403,7 @@ public void Fetch(){
 	 boolean MemtoReg=(boolean) WRITEBACK.get("MemtoReg");
 	 boolean ALUSrc=(boolean) WRITEBACK.get("ALUSrc");
 	 boolean regWrite=(boolean) WRITEBACK.get("regWrite");
+
 	 
 	 if(regWrite){
 	 int x = (int) WRITEBACK.get("ALUout");
@@ -441,10 +458,12 @@ public void Fetch(){
 	  System.out.println("memory = "+MEMORY.toString());
 	  System.out.println("write back = "+WRITEBACK.toString());
 
+
 	}
 //-------------------------------------------------------------------------------------------------------  
 
  public int Mux2x1(int x,int y,boolean s){
 	 return(s)?y:x;
  }
+
 }
