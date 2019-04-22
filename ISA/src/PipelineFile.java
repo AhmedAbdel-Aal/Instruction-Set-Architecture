@@ -6,13 +6,18 @@ public class PipelineFile implements Serializable{
  
  
 public PipelineFile() {
-	 info = new Hashtable<String,Object>();
+	 this.info = new Hashtable<String,Object>();
+
 
 }
 
 public void add(String s, Object o){
+ try{	
 	info.put(s, o);
-//	System.out.println(info.toString());
+ }catch(Exception e){
+	 e.printStackTrace();
+ }
+
 }
 public Object get(String s){
 	return info.get(s);
@@ -26,7 +31,10 @@ public  void clone(PipelineFile p ){
 	this.info = (Hashtable<String, Object>) p.info.clone();
 }
 
-
+@Override
+public String toString() {
+	return "PipelineFile [info=" + info.toString() + "]";
+}
 
   
  

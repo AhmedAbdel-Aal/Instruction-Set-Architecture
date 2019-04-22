@@ -1,7 +1,8 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class Instruction {
+public class Instruction implements Serializable{
  String programeName;
  int instNumber;
  String ipath;
@@ -43,6 +44,7 @@ public class Instruction {
 		return instruction;
 	}
 	public String getOpCode() {
+		System.out.println(instruction);
 		return instruction.substring(0, 5);
 	}
 	public int getR1Number() {

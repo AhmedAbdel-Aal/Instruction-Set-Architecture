@@ -1,20 +1,25 @@
 
 public class register {
-  int number;
-  String value;
- public register(int number,String value) {
-	this.number = number;
-	this.value = "00000";
+  String name;
+  int  value;
+ public register(int name) {
+	this.name = Integer.toBinaryString(name);
+	this.value=0;
+
  }
-public int getNumber() {
-	return number;
+public String getName() {
+	return name;
 }
 
 public int getValue() {
-	return Integer.parseInt(value,2);
+	return value;
 }
-public void setValue(String value) {
+public void setValue(int  value) {
 	this.value = value;
+}
+@Override
+public String toString() {
+	return "register [name=" + name + ", value=" + value + "]";
 }
  
 

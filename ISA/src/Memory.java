@@ -5,32 +5,40 @@ import java.util.Queue;
 
 public class Memory {
 	 ArrayList<Instruction> IMemory = new ArrayList<Instruction>();
-	 ArrayList<String> DMemory = new ArrayList<String>();
+	 String [] DMemory = new String[128];
 	 private static Memory LogSingelton = null; 
 
 	 public static Memory getInstance() 
 	 { 
 	     if (LogSingelton == null) 
-	    	 LogSingelton = new Memory(); 
+	    	 LogSingelton = new Memory();
 
 	     return LogSingelton; 
 	 } 
 //-----------------------------INSTRUCTION MEMORY------------------------------------------------------
+	 public Memory(){
+		 DMemory[4]="00010";
+		 DMemory[5]="00011";
+		 DMemory[6]="1000000";
+
+		}
 	 public void addInstruction(Instruction i){
+		 DMemory[4]="00010";
+		 DMemory[5]="00011";
+		 DMemory[6]="1000000";
 		 this.IMemory.add(i);
 	 }
 	 public Instruction getInstruction(int i){
 		return this.IMemory.get(i);
 	 }
 //-----------------------------DATA MEMORY------------------------------------------------------
-	 public String load(String address , int offset){
-		 int x = Integer.parseInt(address,2);
-		 return DMemory.get((x*4)+offset);
+	 public String load(int address , int offset){
+		 return DMemory[((address*4)+offset)%128];
 	 }
-	 public void store(String data , int offset , String address){
-		 int x = Integer.parseInt(address,2);
-		 int z = (x*4)+offset;
-		 DMemory.set(z,data);
+	 public void store(String data , int offset , int address){
+		 int z = ((address*4)+offset)%128;
+		 System.out.println("from memory = "+z+" "+data);
+		 DMemory[z]=data;
 	 }
 	 
 	 

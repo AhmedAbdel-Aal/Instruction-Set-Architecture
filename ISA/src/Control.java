@@ -56,6 +56,14 @@ public class Control {
 		 Branch=true;
 		  type="I";
 	 }
+	 if(x==18){
+		 MemRead=true;
+		 regWrite=true;
+		 ALUSrc=true;
+		 MemtoReg=true;
+		 regDst=true;
+		 type="I";
+	 }
 	 if(x==19||x==20){
 		 regDst=true;
 		 regWrite=true;
@@ -90,11 +98,12 @@ public class Control {
 	 
  }
  public String getOperationName(String opCode){
+	 System.out.println("from control = opcode = "+opCode);
 	 int x = Integer.parseInt(opCode,2);
 	 this.setOpCode(opCode);
 	 switch(x){
 	 //R-type Instructions
-	 case 0:{ ALUSrc=true; return "ADD";}
+	 case 0:{ return "ADD";}
 	 case 1: return "SUB";
 	 case 2: return "AND";
 	 case 3: return "OR";
@@ -103,7 +112,7 @@ public class Control {
 	 case 6: return "IDV";
 	 case 7: return "MUL";
 	 case 8: return "MULA";
-	 case 9: return "ADDC";
+	 case 9: return "nCk";
 	 case 10: return "SUBRV";
 	 case 11: return "GCD";
 	 case 12: return "LCM";
@@ -113,7 +122,7 @@ public class Control {
 	 case 15: return "ADDI";
 	 case 16: return "SLTI";
 	 case 17: return "BEQ";
-	 case 18: return "SWAP";
+	 case 18: return "LDI";
 	 case 19: return "NZERO";
 	 case 20: return "NONE";
 	 case 21: return "LD";
