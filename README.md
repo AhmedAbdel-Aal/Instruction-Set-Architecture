@@ -137,6 +137,15 @@ Design of ISA:
  
 1. jump  : J target 
  
-
+-------------------------------------------------------------------------------
+# How to use GUI
+ 1- write a program name in first line, that will create a file with your program instruction in case needed later.
+ 
+ 2- write your instrction in the form of [Instruction name, register , register , register, shift] in case of R-type.
+ 
+ 3- press load program, so program is being translated to machine code.
+ 
+ 4- Finally , execute your program.
+ 
  
 
